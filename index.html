@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>306 IP</title>
+    <meta name="description" content="306 IP">
+    <link rel="icon" href="icon/306.svg" type="image/svg+xml">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body oncontextmenu="return false;">
+    <div class="site-wrapper">
+        <!-- 头部 -->
+        <header class="site-header">
+            <div class="header-left">
+                <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+                    <span class="material-icons">menu</span>
+                </button>
+                <a href="/" class="logo-link"><img src="icon/306.svg" alt="Logo"></a>
+                <span class="site-title">306 IP</span>
+            </div>
+            <div class="header-right">
+                <div class="theme-switcher" id="theme-switcher">
+                    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </div>
+                <div class="column-slider-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <input type="range" min="2" max="8" value="5" class="column-slider" id="column-slider">
+                </div>
+            </div>
+        </header>
+
+        <div class="page-container">
+            <!-- 侧边栏分类 -->
+            <aside class="sidebar-nav" id="sidebar-menu-container"></aside>
+            
+            <!-- 主体内容 -->
+            <main class="main-content">
+                <div class="content-header">
+                    <div class="sort-filter-container">
+                        <div class="sort-container">
+                            <label>排序方式：</label>
+                            <div class="sort-dropdown" id="sort-dropdown">
+                                <button class="sort-dropdown-toggle" type="button">
+                                    <span id="sort-selected-text">最新排序</span>
+                                    <span class="material-icons">arrow_drop_down</span>
+                                </button>
+                                <div class="sort-dropdown-menu">
+                                    <button class="sort-dropdown-item active" data-value="desc">最新排序</button>
+                                    <button class="sort-dropdown-item" data-value="asc">最早排序</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="view-mode-container">
+                            <label>视图模式：</label>
+                            <div class="view-mode-dropdown" id="view-mode-dropdown">
+                                <button class="view-mode-toggle" type="button">
+                                    <span id="view-mode-selected-text">分页模式</span>
+                                    <span class="material-icons">arrow_drop_down</span>
+                                </button>
+                                <div class="view-mode-menu">
+                                    <button class="view-mode-item active" data-value="pagination">分页模式</button>
+                                    <button class="view-mode-item" data-value="infinite">无限滚动</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="loading-indicator" class="loading-spinner"></div>
+                
+                <!-- 图片网格 -->
+                <div class="case-grid" id="case-grid-container" style="--columns: 5;"></div>
+                
+                <!-- 分页控件 -->
+                <div class="pagination" id="pagination-container"></div>
+                
+                <!-- 底部声明 -->
+                <footer class="site-footer-bottom">
+                    <p style="max-width: 800px; margin: 0 auto; line-height: 1.6;">
+                        本素材库中的所有素材均由我们使用 AIGC 技术生成，<a href="https://306art.com" target="_blank">306 Art</a> 为本素材库内素材的知识产权权利人，未经我们事先书面同意，您不得以任何方式对素材进行商业性使用或通过信息网络传播。
+                    </p>
+                </footer>
+            </main>
+        </div>
+        
+        <!-- 大图模态框-->
+        <div id="media-modal" class="modal-overlay">
+            <div class="media-modal-wrapper">
+                <button class="modal-close-fancy" id="media-modal-close-btn" title="关闭">
+                    <span class="material-icons">close</span>
+                </button>
+                <img id="modal-media-img" src="" alt="">
+                <div class="modal-badge">图片由 AI 生成</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本 -->
+    <script src="js/theme.js"></script>
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
