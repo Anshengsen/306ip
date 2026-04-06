@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         itemsToRender.forEach(item => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'case-item';
-            itemDiv.dataset.itemId = item.id;
+            itemDiv.dataset.itemId = item.previewPath; 
             
             itemDiv.innerHTML = `
                 <img src="${item.previewPath}" alt="${item.id}" loading="lazy" oncontextmenu="return false;">
@@ -183,10 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const applySorting = (items) => {
         let sortedItems = [...items];
         if (currentSortMode === 'desc') {
-            // 倒序（最新）: 数字大的在前
             sortedItems.sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true, sensitivity: 'base' }));
         } else {
-            // 正序（最早）: 数字小的在前
             sortedItems.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true, sensitivity: 'base' }));
         }
         return sortedItems;
@@ -210,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 打开大图模态框
     const openMediaModal = (item) => {
-        // 优先使用原图路径，如果没有则使用预览图
         modalMediaImg.src = item.originalPath || item.previewPath;
         mediaModal.classList.add('visible');
     };
@@ -306,10 +303,10 @@ document.addEventListener('DOMContentLoaded', () => {
             currentCategory = level === '0' ? null : { level, l1, l2, l3 };
             refreshContent();
             
-            // 移动端点击分类后自动收起侧边栏
             if (window.innerWidth <= 768) {
                 sidebarContainer.classList.remove('open');
-                document.querySelector('.sidebar-overlay').classList.remove('active');
+                const overlay = document.querySelector('.sidebar-overlay');
+                if (overlay) overlay.classList.remove('active');
             }
         });
 
@@ -317,8 +314,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gridContainer.addEventListener('click', e => {
             const caseItem = e.target.closest('.case-item');
             if (caseItem) {
-                const itemId = caseItem.dataset.itemId;
-                const item = allItems.find(i => i.id === itemId);
+                const itemPath = caseItem.dataset.itemId;
+                const item = allItems.find(i => i.previewPath === itemPath);
                 if (item) openMediaModal(item);
             }
         });
@@ -363,7 +360,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2L4 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-8-5z"/>
                 </svg>
-                <div class="flame"></div>
             </div>
         `;
         document.body.appendChild(backToTopBtn);
@@ -378,7 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 backToTopBtn.classList.remove('visible');
             }
 
-            // 无限滚动检测
             if (viewMode === 'infinite' && mainContent) {
                 const scrollHeight = target === window ? document.body.offsetHeight : target.scrollHeight;
                 const clientHeight = target === window ? window.innerHeight : target.clientHeight;
@@ -399,9 +394,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 移动端汉堡菜单
         const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
-        const overlay = document.createElement('div');
-        overlay.className = 'sidebar-overlay';
-        document.body.appendChild(overlay);
+        const overlay = document.querySelector('.sidebar-overlay') || document.createElement('div');
+        if (!overlay.parentNode) {
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
+        }
 
         if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', () => {
